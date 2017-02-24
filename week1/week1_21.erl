@@ -33,7 +33,7 @@ perfect(1) ->
 perfect(N) ->
     perfect(N, 1, 0).
 
-perfect(N, CURR, ACCUM) when N =< CURR ->
+perfect(N, N, ACCUM) ->
     N == ACCUM;
 
 perfect(N, CURR, ACCUM) when N rem CURR == 0 ->
