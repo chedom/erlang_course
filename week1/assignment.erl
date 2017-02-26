@@ -1,5 +1,5 @@
 -module(assignment).
--export([perimeter/1, area/1, enclose/1, bits/1]).
+-export([perimeter/1, area/1, enclose/1, bits/1, tailVerBits/1]).
 
 % auxiliary func 
 getModuleOfVector({X1, Y1}, {X2, Y2}) ->
@@ -33,6 +33,7 @@ perimeter({triangle, {AX,AY}, {BX,BY}, {CX,CY}}) ->
 enclose({circle, {X, Y}, R}) ->
     {rectangle, {X, Y}, 2*R, 2*R};
 enclose({rectangle, {X,Y}, H, W}) ->
+    % the smallest enclosing rectangle of a rectangle will be that rectangle
     {rectangle, {X,Y}, H, W};
 enclose({triangle, {AX,AY}, {BX,BY}, {CX,CY}}) ->
     % points of the rectangle
@@ -48,7 +49,19 @@ enclose({triangle, {AX,AY}, {BX,BY}, {CX,CY}}) ->
     Y = (C + D) / 2,
     {rectangle, {X,Y}, H, W}. 
 
-bits(0) ->
+%direct recursion
+bits(N) when N =< 0 ->
     0;
-bits(N) ->
+bits(N) when is_integer(N) ->
     (N rem 2) + bits(N div 2).
+
+%auxiliary func
+bitsLoop(0, ACCUM) ->
+    ACCUM;
+bitsLoop(CURR, ACCUM) ->
+    bitsLoop((CURR div 2), (ACCUM + (CURR rem 2))).
+
+%tail recursion
+tailVerBits(N)  when is_integer(N), N >= 0 ->
+    bitsLoop(N, 0).
+
