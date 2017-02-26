@@ -48,5 +48,7 @@ enclose({triangle, {AX,AY}, {BX,BY}, {CX,CY}}) ->
     Y = (C + D) / 2,
     {rectangle, {X,Y}, H, W}. 
 
+bits(0) ->
+    0;
 bits(N) ->
-    (N rem 2) + bits(N-1).
+    (N rem 2) + bits(N div 2).
