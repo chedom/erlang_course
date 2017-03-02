@@ -1,5 +1,5 @@
 -module(week2_18).
--export([join/2, concat/1, member/2, merge_sort/1, quick_sort/1]).
+-export([join/2, concat/1, member/2, merge_sort/1, quick_sort/1, insert_sort/1]).
 
 % Joining lists together
 join([], Ys) ->
@@ -69,3 +69,22 @@ filter([X | Xs], F) ->
         true -> [X | filter(Xs, F)];
         false -> filter(Xs, F)
     end.
+
+% Insertion sort ------------------------------------------------
+insert_sort(Xs) ->
+    insert_sort(Xs, []).
+
+insert_sort([], ACCUM) ->
+    ACCUM;
+insert_sort([X | Xs], ACCUM) ->
+    insert_sort(Xs, insert(ACCUM, X)).
+
+insert([], Y) ->
+    [Y];
+insert([X | Xs] = XS, Y) ->
+    case Y =< X of  
+        true -> [Y | XS];
+        false -> [X | insert(Xs, Y)]
+    end.
+
+
