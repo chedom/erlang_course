@@ -5,10 +5,7 @@
     merge_sort/1, 
     quick_sort/1, 
     insert_sort/1, 
-    map/2, 
-    insertMix/2, 
-    perms/1,
-    flatMap/2
+    perms/1
 ]).
 
 % Joining lists together
