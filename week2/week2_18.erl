@@ -1,5 +1,15 @@
 -module(week2_18).
--export([join/2, concat/1, member/2, merge_sort/1, quick_sort/1, insert_sort/1]).
+-export([join/2, 
+    concat/1, 
+    member/2, 
+    merge_sort/1, 
+    quick_sort/1, 
+    insert_sort/1, 
+    map/2, 
+    insertMix/2, 
+    perms/1,
+    flatMap/2
+]).
 
 % Joining lists together
 join([], Ys) ->
@@ -87,4 +97,25 @@ insert([X | Xs] = XS, Y) ->
         false -> [X | insert(Xs, Y)]
     end.
 
+% Permutations
+perms(Xs) ->
+    perms(Xs, [[]]).
+perms([], Accum) ->
+    Accum;
+perms([X | Xs], Accum) ->
+    perms(Xs, flatMap(Accum, fun(Zs) -> insertMix(Zs, X) end)).
 
+insertMix([], Y) ->
+    [[Y]];
+insertMix([X | Xs] = XS, Y) ->
+    [[Y | XS] | map(insertMix(Xs, Y), fun(Zs) -> [X | Zs] end)].
+   
+map([], _F) ->
+    [];
+map([X | Xs], F) ->
+    [F(X) | map(Xs, F)].
+    
+flatMap([], _F) ->
+    [];
+flatMap([X | Xs], F) ->
+    F(X) ++ flatMap(Xs, F).
