@@ -1,5 +1,5 @@
-[pg/etext92/carol10.txt]
-
+[pg/etext92/carol10.txt] qqqqq
+qqqqq vvvvv
                         A CHRISTMAS CAROL
 
                        by Charles Dickens
