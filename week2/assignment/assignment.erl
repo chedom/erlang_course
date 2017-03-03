@@ -34,11 +34,13 @@ splitWords(Str) ->
 splitWords([], Accum, Temp) ->
     filter(Accum ++ [Temp], fun(X) -> X /= [] end);
 splitWords([C | Cs], Accum, Temp) ->
-    case $A =< C andalso  C =< $z of
+    case checkCorrectChar(C) of
         true -> splitWords(Cs, Accum, Temp ++ [C]);
         false -> splitWords(Cs, Accum ++ [Temp], [])
     end.
 
+checkCorrectChar(C) ->
+    (($A =< C) and (C =< $Z)) orelse (($a =< C) and (C =< $z)).
 
 normalizeLines(Xs) ->
     normalizeLines(Xs, [], 1).
