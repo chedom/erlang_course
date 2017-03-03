@@ -1,9 +1,15 @@
 -module(assignment).
--export([test/0, processLine/1]).
+-export([test1/0, test2/0, processLine/1, processAllText/1]).
 -import(index, [get_file_contents/1]).
 
-test() ->
-    get_file_contents("index.erl").
+test1() ->
+    processAllText(get_file_contents("dickens-christmas.txt")).
+
+test2() ->
+    get_file_contents("dickens-christmas.txt").
+
+processAllText(Xs) ->
+    filter(map(fun processLine/1, Xs), fun(X) -> X /= [] end).
 
 processLine(Xs) ->
     filter(splitWords(map(fun nocap/1, Xs)), fun(X) -> length(X) > 2 end).
@@ -30,9 +36,9 @@ splitWords(Str) ->
 splitWords([], Accum, Temp) ->
     filter(Accum ++ [Temp], fun(X) -> X /= [] end);
 splitWords([C | Cs], Accum, Temp) ->
-    case member(".,\ ;:\t\n\'-", C) of
-        true -> splitWords(Cs, Accum ++ [Temp], []);
-        false -> splitWords(Cs, Accum, Temp ++ [C])
+    case $A =< C andalso  C =< $z of
+        true -> splitWords(Cs, Accum, Temp ++ [C]);
+        false -> splitWords(Cs, Accum ++ [Temp], [])
     end.
 
 nocap(X) ->
