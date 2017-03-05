@@ -1,5 +1,5 @@
 -module(assignment).
--export([getIndexes/1, compareTwoWords/2]).
+-export([getIndexes/1]).
 -import(index, [get_file_contents/1]).
 
 getIndexes(FileName) ->
@@ -17,10 +17,6 @@ makeIndexes([{ _Num, Ys } | Xs] = Lines, Accum) ->
             NewLines = deleteWordFromLines(Lines, Z, FindedLines),
             makeIndexes(NewLines, Accum ++ [{Z, listToRange(FindedLines)}])
     end.
-
-
-
-
 
 processAllText(Xs) ->
     map(fun processLine/1, Xs).
@@ -68,26 +64,6 @@ deleteWordFromLines(AllLines, Word, LinesForDel) ->
         AllLines
     ).
 
-compareTwoWords(First, Second) ->
-    Diffs = getDiff(First, Second),
-    Pattern = ["ing", "ed", "s", "es", "ies"],
-    Coincidence = flatMap(fun(X) -> filter(Pattern, fun(Z) -> compareDiffWithPat(X, Z) end) end, Diffs),
-    Coincidence.
-    
-    
-compareDiffWithPat(Diff, Pattern) ->
-    ActualDiff = getLastN(Diff, length(Pattern)),
-    io:write(ActualDiff),
-    ActualDiff == Pattern.
-
-getDiff([], Ys) ->
-    [Ys];
-getDiff(Xs, []) ->
-    [Xs];
-getDiff([Z | Xs], [Z | Ys]) ->
-    getDiff(Xs, Ys);
-getDiff(Xs, Ys) ->
-    [Xs, Ys].
 
 listToRange([]) ->
     [];
@@ -128,42 +104,9 @@ map(_F, []) ->
 map(F, [X | Xs]) ->
     [F(X) | map(F, Xs)].
 
-flatMap(_F, []) ->
-    [];
-flatMap(F, [X | Xs]) ->
-    F(X) ++ flatMap(F, Xs).
-
 member([], _X) ->
     false;
 member([X | _Xs], X) ->
     true;
 member([_Y | Xs], X) ->
     member(Xs, X).
-
-reverse(Xs) ->
-    shunt(Xs, []).
-
-shunt([], Ys) ->
-    Ys;
-shunt([X | Xs], Ys) ->
-    shunt(Xs, [X | Ys]).
-
-getLastN(Xs, N) ->
-    getFirstN(reverse(Xs), N).   
-
-getFirstN([], _N) ->
-    [];
-getFirstN(_Xs, 0) ->
-    [];
-getFirstN([X | Xs], N) ->
-    [X | getFirstN(Xs, N - 1)].
-
-dropLastN(Xs, N) ->
-    reverse(dropFirstN(reverse(Xs), N)).
-
-dropFirstN([], _N) ->
-    [];
-dropFirstN(Xs, 0) ->
-    Xs;
-dropFirstN([X | Xs], N) ->
-    dropFirstN(Xs, N - 1).
