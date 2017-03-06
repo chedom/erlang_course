@@ -5,7 +5,8 @@
     product/1,
     zip/2,
     zip_with/3,
-    zip_with_2/3
+    zip_with_2/3,
+    zip_2/2
 ]).
 
 doubleAll(Xs) ->
@@ -33,3 +34,6 @@ zip_with(F, [X | Xs], [Y | Ys]) ->
 
 zip_with_2(F, Xs, Ys) ->
     lists:map(fun({X, Y}) -> F(X, Y) end, zip(Xs, Ys)).
+
+zip_2(Xs, Ys) ->
+    zip_with(fun(X, Y) -> {X, Y} end, Xs, Ys).
