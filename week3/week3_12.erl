@@ -11,7 +11,9 @@
     rand/1,
     val/1,
     tournament/2,
-    groupChoices/1
+    groupChoices/1,
+    leastFreak/1,
+    mostFreak/1
 ]).
 
 
@@ -117,6 +119,13 @@ beats(paper) ->
 beats(scissors) ->
     paper.
 
+lose(rock) ->
+    paper;
+lose(paper) ->
+    scissors;
+lose(scissors) ->
+    rock.
+
 %
 % strategies.
 %
@@ -149,6 +158,20 @@ cycle(Xs) ->
 rand(_) ->
     enum(rand:uniform(3) - 1).
 
+leastFreak([]) ->
+    paper;
+leastFreak(Xs) ->
+    [{Choice, _N} | _ZS] = getMin(Xs),
+    lose(Choice).
+
+mostFreak([]) ->
+    paper;
+mostFreak(Xs) ->
+    [{Choice, _N} | _ZS] = getMax(Xs),
+    lose(Choice).
+
+
+
 groupChoices(Xs) ->
     lists:foldl(fun insert/2, [], Xs).
 
@@ -158,3 +181,9 @@ insert(X, Accum) ->
         [] -> [{X, 1} | Accum];
         [{Choice, N}] -> [{Choice, N + 1} | lists:delete({Choice, N}, Accum)]
     end.
+
+getMin(Xs) ->
+    lists:sort(fun({_, N1}, {_, N2}) -> N1 < N2 end, groupChoices(Xs)).
+
+getMax(Xs) ->
+    lists:sort(fun({_, N1}, {_, N2}) -> N1 > N2 end, groupChoices(Xs)).
