@@ -1,5 +1,18 @@
 -module(week3_12).
--export([play/1,echo/1,play_two/3,rock/1,no_repeat/1,const/1,enum/1,cycle/1,rand/1,val/1,tournament/2]).
+-export([
+    play/1,
+    echo/1,
+    play_two/3,
+    rock/1,
+    no_repeat/1,
+    const/1,
+    enum/1,
+    cycle/1,
+    rand/1,
+    val/1,
+    tournament/2,
+    groupChoices/1
+]).
 
 
 %
@@ -135,3 +148,13 @@ cycle(Xs) ->
 
 rand(_) ->
     enum(rand:uniform(3) - 1).
+
+groupChoices(Xs) ->
+    lists:foldl(fun insert/2, [], Xs).
+
+insert(X, Accum) ->
+    Exist = lists:filter(fun({Choice, _}) -> Choice == X end, Accum),
+    case Exist of
+        [] -> [{X, 1} | Accum];
+        [{Choice, N}] -> [{Choice, N + 1} | lists:delete({Choice, N}, Accum)]
+    end.
