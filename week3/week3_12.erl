@@ -5,7 +5,6 @@
     play_two/3,
     rock/1,
     no_repeat/1,
-    const/1,
     enum/1,
     cycle/1,
     rand/1,
@@ -14,7 +13,10 @@
     groupChoices/1,
     leastFreaq/1,
     mostFreaq/1,
-    randomStrategy/1
+    randomStrategy/1,
+    getChoices/3,
+    getResultForStrategy/2,
+    bestStrategy/1
 ]).
 
 
@@ -144,13 +146,8 @@ rock(_) ->
 % REPLACE THE dummy DEFINITIONS
 
 no_repeat([]) ->
-    dummy;
-no_repeat([X|_]) ->
-    dummy.
-
-const([]) ->
     paper;
-const([X|_]) ->
+no_repeat([X|_]) ->
     beats(X).
 
 cycle(Xs) ->
@@ -175,8 +172,7 @@ randomStrategy(Xs) ->
     Strategies = [
         fun echo/1 , 
         fun rock/1, 
-        fun no_repeat/1, 
-        fun const/1,  
+        fun no_repeat/1,  
         fun cycle/1,
         fun rand/1,
         fun leastFreaq/1,
@@ -185,7 +181,28 @@ randomStrategy(Xs) ->
     ChosenStrat = lists:nth(rand:uniform(length(Strategies)), Strategies),
     ChosenStrat(Xs).
 
+bestStrategy(Xs) ->
+    Strategies = [
+        fun echo/1 , 
+        fun rock/1, 
+        fun no_repeat/1,  
+        fun cycle/1,
+        fun rand/1,
+        fun leastFreaq/1,
+        fun mostFreaq/1
+    ],
+    SortedStrategiesResults = lists:keysort(2, lists:map(fun(F) -> getResultForStrategy(F, Xs) end, Strategies)),
+    {BestStrategy, _} = lists:last(SortedStrategiesResults),
+    BestStrategy(Xs).
 
+getResultForStrategy(Strategy, Xs) ->
+    Rev = lists:reverse(Xs),
+    {Strategy, tournament(Rev, getChoices(Strategy, Rev, []))}.
+
+getChoices(_F, [], _Explored) ->
+    [];
+getChoices(F, [X | Xs], Explored) ->
+   [F([X | Explored]) | getChoices(F, Xs, [X | Explored])].
 
 groupChoices(Xs) ->
     lists:foldl(fun insert/2, [], Xs).
