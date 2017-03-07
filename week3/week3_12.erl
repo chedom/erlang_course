@@ -12,8 +12,8 @@
     val/1,
     tournament/2,
     groupChoices/1,
-    leastFreak/1,
-    mostFreak/1
+    leastFreaq/1,
+    mostFreaq/1
 ]).
 
 
@@ -164,9 +164,9 @@ leastFreak(Xs) ->
     [{Choice, _N} | _ZS] = getMin(Xs),
     lose(Choice).
 
-mostFreak([]) ->
+mostFreaq([]) ->
     paper;
-mostFreak(Xs) ->
+mostFreaq(Xs) ->
     [{Choice, _N} | _ZS] = getMax(Xs),
     lose(Choice).
 
