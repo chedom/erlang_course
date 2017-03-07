@@ -134,4 +134,4 @@ cycle(Xs) ->
     dummy.
 
 rand(_) ->
-    dummy.
+    enum(rand:uniform(3) - 1).
