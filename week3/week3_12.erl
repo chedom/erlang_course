@@ -13,7 +13,8 @@
     tournament/2,
     groupChoices/1,
     leastFreaq/1,
-    mostFreaq/1
+    mostFreaq/1,
+    randomStrategy/1
 ]).
 
 
@@ -158,9 +159,9 @@ cycle(Xs) ->
 rand(_) ->
     enum(rand:uniform(3) - 1).
 
-leastFreak([]) ->
+leastFreaq([]) ->
     paper;
-leastFreak(Xs) ->
+leastFreaq(Xs) ->
     [{Choice, _N} | _ZS] = getMin(Xs),
     lose(Choice).
 
@@ -169,6 +170,20 @@ mostFreaq([]) ->
 mostFreaq(Xs) ->
     [{Choice, _N} | _ZS] = getMax(Xs),
     lose(Choice).
+
+randomStrategy(Xs) ->
+    Strategies = [
+        fun echo/1 , 
+        fun rock/1, 
+        fun no_repeat/1, 
+        fun const/1,  
+        fun cycle/1,
+        fun rand/1,
+        fun leastFreaq/1,
+        fun mostFreaq/1
+    ],
+    ChosenStrat = lists:nth(rand:uniform(length(Strategies)), Strategies),
+    ChosenStrat(Xs).
 
 
 
