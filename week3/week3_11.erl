@@ -9,17 +9,16 @@ compose([], Z) ->
 compose([X | Xs], Z) ->
     X(compose(Xs, Z)).
 
+compose2(F, G) ->
+    fun(X) -> F(G(X)) end.
+
 twice(Func) ->
     fun(X) -> Func(Func(X)) end.
 
 id(X) -> 
     X.
 
+iterate(0) ->
+    fun(_F) -> fun id/1 end;
 iterate(N) ->
-    fun(F) -> iterate(N, F) end.
-
-iterate(0, _F) ->
-    fun id/1;
-iterate(N, F) ->
-    F(),
-    iterate(N - 1, F).
+    fun(F) -> compose2(F, (iterate(N-1))(F)) end.
