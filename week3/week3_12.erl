@@ -25,7 +25,7 @@
 %
 
 play_two(StrategyL,StrategyR,N) ->
-    play_two(StrategyL,StrategyR,[],[],N).
+    play_two(StrategyL, StrategyR, [], [], N).
 
 % tail recursive loop for play_two/3
 % 0 case computes the result of the tournament
@@ -33,11 +33,13 @@ play_two(StrategyL,StrategyR,N) ->
 % FOR YOU TO DEFINE
 % REPLACE THE dummy DEFINITIONS
 
-play_two(_,_,PlaysL,PlaysR,0) ->
-   dummy;
-
-play_two(StrategyL,StrategyR,PlaysL,PlaysR,N) ->
-   dummy.
+play_two(_Strategy1, _Strategy2, Moves1, Moves2, 0) ->
+    Result = tournament(Moves1, Moves2),
+    io:format("Result: ~p~n",[Result]);
+play_two(Strategy1, Strategy2, Moves1, Moves2, N) ->
+    NewMoves1 = [Strategy1(Moves2) | Moves1],
+    NewMoves2 = [Strategy2(Moves1) | Moves2],
+    play_two(Strategy1, Strategy2, NewMoves1, NewMoves2, N - 1).
 
 %
 % interactively play against a strategy, provided as argument.
