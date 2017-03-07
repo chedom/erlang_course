@@ -131,7 +131,7 @@ const([X|_]) ->
     beats(X).
 
 cycle(Xs) ->
-    dummy.
+    enum(length(Xs) rem 3).
 
 rand(_) ->
     enum(rand:uniform(3) - 1).
